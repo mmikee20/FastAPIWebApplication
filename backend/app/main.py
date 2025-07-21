@@ -42,6 +42,10 @@ async def create_item(item: Item):
 
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"message": "Backend is running!"}
+
 @app.on_event("startup")
 async def startup():
     await database.init_db()
