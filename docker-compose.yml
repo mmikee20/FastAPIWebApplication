@@ -2,7 +2,7 @@ version: '3'
 services:
   backend-api:
     build: ./backend
-    command: uvicorn main:app --host 0.0.0.0 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
     volumes:
       - ./backend:/app
     ports:
@@ -12,7 +12,7 @@ services:
 
   frontend-server:
     build: ./frontend
-    command: uvicorn main:app --host 0.0.0.0 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
     volumes:
       - ./frontend:/app
     ports:

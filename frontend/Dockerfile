@@ -3,6 +3,7 @@ FROM python:3.10
 WORKDIR /code
 
 COPY ./app /code/app
+COPY ./templates /code/templates
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
