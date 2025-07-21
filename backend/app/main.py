@@ -55,7 +55,6 @@ def read_root():
 async def startup():
     await database.init_db()
 
-# ✅ Correct wrapper for get_db (uses async with, not async for)
 async def get_db_session() -> AsyncSession:
     async with database.get_db() as session:
         yield session
