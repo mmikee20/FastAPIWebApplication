@@ -1,0 +1,50 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_COMPOSE_VERSION: '1.29.2'
+  IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+Build Image:
+  stage: build
+  script:
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+  only:
+    - main
+  tags:
+    - docker
+
+Test:
+  stage: test
+  script:
+    - |
+      if curl -s --head http://$FASTAPI_HOST:$FASTAPI_PORT/ | grep "200 OK" > /dev/null; then
+        echo "The FastAPI application on port $FASTAPI_PORT is up and running."
+      else
+        echo "The FastAPI application on port $FASTAPI_PORT is not responding."
+        exit 1
+      fi
+  variables:
+    FASTAPI_HOST: "localhost"
+    FASTAPI_PORT: "8000"
+  only:
+    - main
+  tags:
+    - docker
+
+Deploy:
+  stage: deploy
+  image: docker/compose:$DOCKER_COMPOSE_VERSION
+  script:
+    - docker pull $IMAGE_TAG
+    - docker-compose -f docker-compose.prod.yml up -d
+  only:
+    - main
+  tags:
+    - docker
