@@ -6,3 +6,4 @@ pydantic==2.11.7
 databases
 sqlalchemy
 aiosqlite
+jinja2

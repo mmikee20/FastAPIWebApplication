@@ -8,10 +8,11 @@ app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
-# 👇 Change this to match your Docker Compose service name and port
-BACKEND_URL = os.getenv("BACKEND_URL", "http://backend-api:8000")
+# Use env variable or default to Docker network name for backend
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
+async def read_index(request: Request):
     items = await get_items(BACKEND_URL)
     return templates.TemplateResponse("index.html", {"request": request, "items": items})
+

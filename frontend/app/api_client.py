@@ -7,4 +7,4 @@ async def get_items(backend_url: str):
             response.raise_for_status()
             return response.json()
     except httpx.RequestError:
-        return []  # Fallback if API is unreachable
+        return []  # Return empty list if backend is unreachable
