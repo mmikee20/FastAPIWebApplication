@@ -2,8 +2,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from sqlalchemy.orm import declarative_base
 from contextlib import asynccontextmanager
 
-DATABASE_URL = "sqlite+aiosqlite:///./test.db"
+DATABASE_URL = "sqlite+aiosqlite:///./test.db"  # Use asyncpg for PostgreSQL in production
 
+# Create the async engine and session
 engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 Base = declarative_base()
@@ -13,7 +14,8 @@ async def get_db():
     async with SessionLocal() as session:
         yield session
 
+# Used to create DB tables at startup
 async def init_db():
-    import app.models_db  # Ensure models are imported
+    import app.models_db  # Ensure models are registered
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

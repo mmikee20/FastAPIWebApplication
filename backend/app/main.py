@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app import schema, crud, database
+from app.database import get_db
 
 """ from fastapi import FastAPI
 from pydantic import BaseModel
@@ -39,6 +40,10 @@ async def create_item(item: Item):
         item_dict.update({"price_with_tax": price_with_tax})
     return item_dict """
 
+async def get_db_session():
+    async for session in get_db():
+        yield session
+
 
 app = FastAPI()
 
@@ -50,26 +55,31 @@ def read_root():
 async def startup():
     await database.init_db()
 
-@app.post("/items/", response_model=schema.Item)
-async def create_item(item: schema.ItemCreate, db: AsyncSession = Depends(database.get_db)):
-    return await crud.create_item(db, item)
+# ✅ Correct wrapper for get_db (uses async with, not async for)
+async def get_db_session() -> AsyncSession:
+    async with database.get_db() as session:
+        yield session
 
 @app.get("/items/", response_model=list[schema.Item])
-async def list_items(db: AsyncSession = Depends(database.get_db)):
+async def list_items(db: AsyncSession = Depends(get_db_session)):
     return await crud.get_items(db)
 
+@app.post("/items/", response_model=schema.Item)
+async def create_item(item: schema.ItemCreate, db: AsyncSession = Depends(get_db_session)):
+    return await crud.create_item(db, item)
+
 @app.get("/items/{item_id}", response_model=schema.Item)
-async def get_item(item_id: int, db: AsyncSession = Depends(database.get_db)):
+async def get_item(item_id: int, db: AsyncSession = Depends(get_db_session)):
     item = await crud.get_item(db, item_id)
     if item is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return item
 
 @app.put("/items/{item_id}", response_model=schema.Item)
-async def update_item(item_id: int, item: schema.ItemCreate, db: AsyncSession = Depends(database.get_db)):
+async def update_item(item_id: int, item: schema.ItemCreate, db: AsyncSession = Depends(get_db_session)):
     return await crud.update_item(db, item_id, item)
 
 @app.delete("/items/{item_id}")
-async def delete_item(item_id: int, db: AsyncSession = Depends(database.get_db)):
+async def delete_item(item_id: int, db: AsyncSession = Depends(get_db_session)):
     return await crud.delete_item(db, item_id)
 
