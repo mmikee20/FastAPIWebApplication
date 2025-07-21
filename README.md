@@ -17,19 +17,15 @@ Configuration and Setup Guide:
 Project Setup: Create separate directories for the backend and frontend services within your project folder. Initialize a Python virtual environment in each and install FastAPI and Uvicorn (ASGI server).
 
 Backend API Development:
-
+---------------------------------------------------------------------------------------
 Define your data models using Pydantic for input validation and serialization.
-
 Implement API routes handling CRUD operations, leveraging FastAPI's path operation decorators (e.g., @app.get, @app.post).
-
 Use asynchronous database libraries (e.g., databases with async SQL Alchemy) for non-blocking database operations.
 
 Frontend Server Development:
-
+---------------------------------------------------------------------------------------
 In the frontend service, set up Jinja2 templates in a templates directory.
-
 Create FastAPI endpoints that render these templates, passing data obtained from the backend API.
-
 Utilize FastAPI's HTTPClient or any async HTTP client library to call the backend API from the frontend service.
 
 Docker-Compose Setup: Define both services in a docker-compose.yml file for easy deployment and local development. Ensure both services are on the same network for internal communication. → https://hfmarkets.atlassian.net/wiki/spaces/DT/pages/42598504/Gitlab+CI+CD 
@@ -37,7 +33,7 @@ Docker-Compose Setup: Define both services in a docker-compose.yml file for easy
 gitlab-ci: In the context of GitLab, a CI/CD definition refers to the configuration file that outlines the steps, rules, and actions to be taken during the CI/CD pipeline. This definition is usually stored in the project's repository and is written in a YAML format. The definition file, often named '.gitlab-ci.yml', specifies the various stages of the pipeline, such as 'build', 'test', 'deploy', and more. It also includes details about the environment, dependencies, scripts, and rules that govern the pipeline's behavior. By defining the CI/CD pipeline within this file, we can automate tasks like compiling code, running tests, and deploying applications to different environments, leading to improved collaboration, code quality, and faster software delivery. Some examples can be found here: https://docs.gitlab.com/ee/ci/examples/
 
 Docker-Compose Sample:
-
+---------------------------------------------------------------------------------------
 version: '3'
 services:
   backend-api:
@@ -69,8 +65,9 @@ networks:
 
 create your network : docker network create fastapi-network --driver=bridge --subnet=192.168.0.1/24
 
-Below is a sample .gitlab-ci.yml file tailored to a FastAPI project. This pipeline configuration leverages Docker and assumes that you have Docker Compose configurations ready for deploying your application.
 
+Below is a sample .gitlab-ci.yml file tailored to a FastAPI project. This pipeline configuration leverages Docker and assumes that you have Docker Compose configurations ready for deploying your application.
+---------------------------------------------------------------------------------------
 stages:
   - build
   - test
@@ -122,8 +119,9 @@ Deploy:
   tags:
     - docker
 
-You can use this check_port.py script below for testing as well, or make your own bash script that will not require the socket python package as it is in the gitlab ci file.
 
+You can use this check_port.py script below for testing as well, or make your own bash script that will not require the socket python package as it is in the gitlab ci file.
+---------------------------------------------------------------------------------------
 import socket
 
 def check_port(host, port):
@@ -143,8 +141,9 @@ else:
     print(f"The FastAPI application on port {PORT} is not responding.")
 
 
-Explanations for the gitlab-ci configuration:
 
+Explanations for the gitlab-ci configuration:
+----------------------------------------------------------
 Stage: The job is placed in a test stage which runs after build and deploy stages. Ensure your stages are defined in the order you want them to execute.
 
 Image: This job uses the curlimages/curl Docker image which is a lightweight image containing the curl command.
@@ -165,75 +164,58 @@ Docker and Docker Compose: Enhance your knowledge of containerization, learning 
 
 gitlab-ci: Provide a solid foundation in GitLab CI/CD, equipping you with the skills and knowledge to implement efficient, secure, and automated CI/CD pipelines that support the rapid development and deployment of software applications.
 
-This setup needs also the application files. Here is a guide to make a project in our gitlab and add the files needed per project:
 
+**This setup needs also the application files. Here is a guide to make a project in our gitlab and add the files needed per project:**
+-------------------------------------------------------------------------------------------------------------------------------------------------
 1. Create the Repository on GitLab.hfmarkets.com
-
+---------------------------------------------------------------------------------------
 Navigate to GitLab: Go to gitlab.hfmarkets.com and log in with your credentials.
-
 Access the DevOps Group: Find and click on the devops group within our organization's GitLab instance.
-
 Create a New Project: Click the "New project" button.
-
 Project Name: Give your project a meaningful name that reflects its purpose.
-
 Visibility Level: Choose "Private" to ensure the project is only accessible to team members unless instructed otherwise.
-
 Initialize with a README: Check this option to automatically create a README.md file in your repository. This is useful for providing an overview or documentation of your project.
 
 2. Clone the Repository Locally
-
-After creating your project, clone it to your local machine using the provided Git command. For example:
-
-git clone https://gitlab.hfmarkets.com/devops/your-project-name.git
-
+---------------------------------------------------------------------------------------
+After creating your project, clone it to your local machine using the provided Git command. For example: git clone https://gitlab.hfmarkets.com/devops/your-project-name.git
 Navigate into your project directory:
-
 cd your-project-name
 
 3. Structure Your Project
-
+---------------------------------------------------------------------------------------
 Ensure your project directory includes the following elements:
 
 Backend Service:
-
+----------------------------------------------------------
 Create a backend directory to contain your backend service code and Dockerfile.
-
 Ensure the backend directory includes:
-
 Application code and dependencies (requirements.txt for Python applications).
-
 A Dockerfile specifying the build instructions for your backend service.
 
 Frontend Service:
-
+----------------------------------------------------------
 Create a frontend directory for your frontend service code and Dockerfile.
-
 The frontend directory should include:
-
 Your static files, HTML templates, and any other resources required by your frontend service.
 
 A Dockerfile to build your frontend service.
-
+----------------------------------------------------------
 Docker Compose File:
-
 At the root of your repository, add a docker-compose.yml file that defines the services, networks, and volumes for your application, following the structure and examples provided earlier.
 
 .gitlab-ci.yml File:
-
+----------------------------------------------------------
 Also at the root, include a .gitlab-ci.yml file to define your CI/CD pipeline according to the learning objectives. This file should instruct GitLab CI/CD on how to build, test, and deploy your services.
 
 4. Push Your Changes
-
+---------------------------------------------------------------------------------------
 After setting up your project structure and adding the necessary files, commit your changes:
-
 git add .
 git commit -m "Initial project setup with backend and frontend services"
-
 Push your changes to the GitLab repository:
-
 git push -u origin main
 
 5. Verify CI/CD Pipeline
-
+---------------------------------------------------------------------------------------
 Once your changes are pushed, go to your project on gitlab.hfmarkets.com and navigate to the CI/CD section to ensure that your pipeline runs successfully.
