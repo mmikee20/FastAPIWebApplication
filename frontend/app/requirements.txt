@@ -1,8 +1,0 @@
-uvicorn[standard]
-fastapi==0.116.1
-requests==2.32.3
-httpx
-pydantic==2.11.7
-databases
-sqlalchemy
-aiosqlite
