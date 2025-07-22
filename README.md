@@ -219,3 +219,61 @@ git push -u origin main
 5. Verify CI/CD Pipeline
 ---------------------------------------------------------------------------------------
 Once your changes are pushed, go to your project on gitlab.hfmarkets.com and navigate to the CI/CD section to ensure that your pipeline runs successfully.
+
+
+NEXT CHAPTER: Implement Prometheus Monitoring for FastAPI Services and Setup Prometheus Instance
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Hello,
+
+The goal of this task is to enhance our monitoring capabilities by integrating Prometheus metrics into our two FastAPI services: one serving as an API backend and the other as a frontend interface. Additionally, we will deploy a Prometheus instance using Docker to collect and aggregate these metrics for better observability and system health monitoring.
+
+Objectives:
+
+Integration of Prometheus Metrics: Add Prometheus metrics to both the FastAPI API service and the FastAPI frontend service. Metrics should include but not be limited to HTTP request durations, response statuses, and system resource utilization.
+
+Deployment of Prometheus Instance: Deploy a Prometheus instance using Docker. This instance will be responsible for scraping the exposed metrics from both FastAPI services and storing them for analysis.
+
+Visualization and Alerting: Ensure that the Prometheus instance is configured to support visualization tools (e.g., Grafana) and set up basic alerting rules for critical metrics thresholds.
+
+Example Docker-Compose for Prometheus:
+
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
+
+
+Technical Requirements:
+
+FastAPI Services: Modify both FastAPI services to include Prometheus middleware that captures necessary metrics.
+
+Prometheus Configuration: Configure the Prometheus instance to scrape metrics from both services at a suitable interval.
+
+Docker: Use Docker and Docker Compose for deploying Prometheus and ensure compatibility with existing services.
+
+Learning Goals:
+
+Prometheus Integration: Gain practical experience in integrating Prometheus with FastAPI services for real-time monitoring.
+
+Docker Deployment: Enhance skills in deploying monitoring tools with Docker and Docker Compose, focusing on network and volume management.
+
+Observability Best Practices: Understand the importance of observability in modern applications and how to effectively use metrics for monitoring and alerting.
+
+Performance Optimization: Learn how to identify performance bottlenecks and issues through metrics analysis and apply optimizations based on data-driven insights.
+
+
+
