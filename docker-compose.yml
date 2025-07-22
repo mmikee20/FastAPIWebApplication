@@ -1,7 +1,8 @@
 version: '3'
 services:
   backend-api:
-    build: ./backend
+    #build: ./backend
+    image: registry.hfmarkets.com:7443/devops/fastapiwebapplication_michalism/backend:live
     command: uvicorn app.main:app --host 0.0.0.0 --reload
     volumes:
       - ./backend:/app
@@ -11,12 +12,13 @@ services:
       - fastapi-network
 
   frontend-server:
-    build: ./frontend
+    #build: ./frontend
+    image: registry.hfmarkets.com:7443/devops/fastapiwebapplication_michalism/frontend:live
     command: uvicorn app.main:app --host 0.0.0.0 --reload
     volumes:
       - ./frontend:/app
     ports:
-      - "8080:8000"
+      - "8081:8000"
     networks:
       - fastapi-network
     depends_on:
