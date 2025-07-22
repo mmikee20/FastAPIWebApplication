@@ -1,5 +1,5 @@
-# FastAPIWebApplication
-
+FIRST CHAPTER: FastAPIWebApplication
+----------------------------------------------
 Description
 ----------------
 This exercise aims to develop a comprehensive understanding of building modern web applications using FastAPI, an efficient and fast framework for building APIs in Python. You will create a two-tier application: one service as a backend API and another as a frontend server utilizing Jinja2 templates for dynamic content rendering. This setup provides hands-on experience with FastAPI's powerful features for asynchronous programming, dependency injection, and automatic API documentation, along with integrating front-end technologies for a full-stack development experience. At the same time you will develop a gitlab-ci pipeline that will allow you to have a ci/cd component in your project.
@@ -223,9 +223,8 @@ Once your changes are pushed, go to your project on gitlab.hfmarkets.com and nav
 
 NEXT CHAPTER: Implement Prometheus Monitoring for FastAPI Services and Setup Prometheus Instance
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Hello,
-
+Description
+----------------
 The goal of this task is to enhance our monitoring capabilities by integrating Prometheus metrics into our two FastAPI services: one serving as an API backend and the other as a frontend interface. Additionally, we will deploy a Prometheus instance using Docker to collect and aggregate these metrics for better observability and system health monitoring.
 
 Objectives:
