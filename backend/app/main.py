@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app import schema, crud, database
+from prometheus_fastapi_instrumentator import Instrumentator
 from app.database import get_db
 
 """ from fastapi import FastAPI
@@ -40,12 +41,14 @@ async def create_item(item: Item):
         item_dict.update({"price_with_tax": price_with_tax})
     return item_dict """
 
-async def get_db_session():
+"""async def get_db_session():
     async with get_db() as session:
-        yield session
+        yield session"""
 
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 @app.get("/")
 def read_root():

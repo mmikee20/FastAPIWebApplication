@@ -2,9 +2,12 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from app.api_client import get_items
+from prometheus_fastapi_instrumentator import Instrumentator
 import os
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 templates = Jinja2Templates(directory="templates")
 
