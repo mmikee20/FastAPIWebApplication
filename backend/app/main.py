@@ -55,10 +55,6 @@ def read_root():
 async def startup():
     await database.init_db()
 
-async def get_db_session() -> AsyncSession:
-    async with database.get_db() as session:
-        yield session
-
 @app.get("/items/", response_model=list[schema.Item])
 async def list_items(db: AsyncSession = Depends(get_db_session)):
     return await crud.get_items(db)
