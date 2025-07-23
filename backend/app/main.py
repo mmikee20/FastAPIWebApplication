@@ -41,7 +41,7 @@ async def create_item(item: Item):
     return item_dict """
 
 async def get_db_session():
-    async for session in get_db():
+    async with get_db() as session:
         yield session
 
 
@@ -54,6 +54,10 @@ def read_root():
 @app.on_event("startup")
 async def startup():
     await database.init_db()
+
+async def get_db_session() -> AsyncSession:
+    async with database.get_db() as session:
+        yield session
 
 @app.get("/items/", response_model=list[schema.Item])
 async def list_items(db: AsyncSession = Depends(get_db_session)):
