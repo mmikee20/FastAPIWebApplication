@@ -23,6 +23,24 @@ services:
       - fastapi-network
     depends_on:
       - backend-api
+  
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - fastapi-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - fastapi-network
 
 networks:
   fastapi-network:
