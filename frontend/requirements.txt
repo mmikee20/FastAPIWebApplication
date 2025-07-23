@@ -7,3 +7,4 @@ databases
 sqlalchemy
 aiosqlite
 jinja2
+prometheus-fastapi-instrumentator
