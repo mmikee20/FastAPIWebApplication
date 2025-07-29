@@ -9,7 +9,6 @@ engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 Base = declarative_base()
 
-@asynccontextmanager
 async def get_db():
     async with SessionLocal() as session:
         yield session
